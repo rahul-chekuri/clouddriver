@@ -18,6 +18,7 @@ package com.netflix.spinnaker.clouddriver.controllers
 
 import com.netflix.spinnaker.clouddriver.model.Network
 import com.netflix.spinnaker.clouddriver.model.NetworkProvider
+import io.reactivex.rxjava3.core.Observable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -33,8 +34,8 @@ class NetworkController {
 
   @RequestMapping(method = RequestMethod.GET)
   Map<String, Set<Network>> list() {
-    rx.Observable.from(networkProviders).flatMap { networkProvider ->
-      rx.Observable.from(networkProvider.getAll())
+    Observable.fromIterable(networkProviders).flatMap { networkProvider ->
+      Observable.fromIterable(networkProvider.getAll())
     } filter {
       it != null
     } reduce([:], { Map networks, Network network ->
@@ -43,7 +44,7 @@ class NetworkController {
       }
       networks[network.cloudProvider] << network
       networks
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{cloudProvider}")

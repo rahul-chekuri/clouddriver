@@ -19,6 +19,7 @@ package com.netflix.spinnaker.clouddriver.controllers
 import com.netflix.spinnaker.clouddriver.model.ElasticIp
 import com.netflix.spinnaker.clouddriver.model.ElasticIpProvider
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
+import io.reactivex.rxjava3.core.Observable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,21 +39,21 @@ class ElasticIpController {
 
   @RequestMapping(method = RequestMethod.GET, value = "/{account}")
   Set<ElasticIp> listByAccount(@PathVariable String account) {
-    rx.Observable.from(elasticIpProviders).flatMap {
-      rx.Observable.from(it.getAllByAccount(account))
+    Observable.fromIterable(elasticIpProviders).flatMap {
+      Observable.fromIterable(it.getAllByAccount(account))
     } reduce(new HashSet<ElasticIp>(), { Set elasticIps, ElasticIp elasticIp ->
       elasticIps << elasticIp
       elasticIps
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{account}", params = ['region'])
   Set<ElasticIp> listByAccountAndRegion(@PathVariable String account, @RequestParam("region") String region) {
-    rx.Observable.from(elasticIpProviders).flatMap {
-      rx.Observable.from(it.getAllByAccountAndRegion(account, region))
+    Observable.fromIterable(elasticIpProviders).flatMap {
+      Observable.fromIterable(it.getAllByAccountAndRegion(account, region))
     } reduce(new HashSet<ElasticIp>(), { Set elasticIps, ElasticIp elasticIp ->
       elasticIps << elasticIp
       elasticIps
-    }) toBlocking() first()
+    }) blockingGet()
   }
 }
