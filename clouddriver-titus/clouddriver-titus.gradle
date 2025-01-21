@@ -2,7 +2,7 @@ apply plugin: "com.google.protobuf"
 
 ext {
   protobufVersion = '3.21.12'
-  grpcVersion = '1.45.1'
+  grpcVersion = '1.63.0'
 }
 
 dependencies {
@@ -78,7 +78,7 @@ protobuf {
   }
   generateProtoTasks {
     all()*.plugins {
-      grpc {}
+      grpc {option 'jakarta_omit'}
     }
   }
 }
