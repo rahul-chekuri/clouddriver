@@ -42,6 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -393,7 +394,11 @@ public class ClusteredSortAgentScheduler extends CatsModuleAware
       }
 
       // First cull threads in the WORKING set that have been there too long (TIMEOUT time).
-      Set<String> oldKeys = jedis.zrangeByScore(WORKING_SET, "-inf", score(jedis, NOW));
+      Set<String> oldKeys =
+          Optional.ofNullable(jedis.zrangeByScore(WORKING_SET, "-inf", score(jedis, NOW)))
+              .orElse(new ArrayList<>())
+              .stream()
+              .collect(Collectors.toSet());
       for (String key : oldKeys) {
         // Ignore result, since if this agent was released between now and the above jedis call, our
         // work was done
