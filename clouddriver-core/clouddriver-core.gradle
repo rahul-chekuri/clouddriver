@@ -15,8 +15,8 @@ dependencies {
   // which appears to require consumers to have core groovy on the classpath
   api "org.apache.groovy:groovy"
 
-  implementation "javax.inject:javax.inject:1"
-  implementation "javax.validation:validation-api"
+  implementation "jakarta.inject:jakarta.inject-api:2.0.1"
+  implementation "jakarta.validation:jakarta.validation-api"
   implementation "net.logstash.logback:logstash-logback-encoder"
   implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
   implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda"
@@ -36,7 +36,7 @@ dependencies {
   implementation "com.squareup.retrofit:converter-jackson"
   implementation "com.squareup.retrofit:retrofit"
   implementation "com.jakewharton.retrofit:retrofit1-okhttp3-client"
-  implementation "io.reactivex:rxjava"
+  implementation "io.reactivex:rxjava:+"
   implementation "net.jodah:failsafe:1.0.4"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-templates"

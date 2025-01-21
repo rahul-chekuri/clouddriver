@@ -24,7 +24,7 @@ import com.netflix.spinnaker.clouddriver.model.ServerGroup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Provider
+import jakarta.inject.Provider
 
 import static com.netflix.spinnaker.clouddriver.core.ProjectClustersService.ClusterModel
 

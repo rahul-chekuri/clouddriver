@@ -33,7 +33,6 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 
-import javax.el.MethodNotFoundException
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method
 
@@ -101,7 +100,7 @@ class OperationsTypeChecker implements ApplicationListener<ContextRefreshedEvent
     try {
       Method convertDescriptionMethod = instance.class.getMethod("convertDescription", Map)
       return convertDescriptionMethod.returnType
-    } catch (MethodNotFoundException mnfe) {
+    } catch (jakarta.el.MethodNotFoundException mnfe) {
       log.debug("Cannot find 'convertDescription' method", mnfe)
     }
     return null
